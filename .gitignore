@@ -1,0 +1,30 @@
+# .gitignore
+
+# Python virtual environment
+venv/
+.venv/ # Some tools might name it .venv
+
+# Python compiled files
+__pycache__/
+*.pyc
+
+# Environment variables file
+.env
+
+# Editor and IDE specific files
+.vscode/
+.idea/
+
+# Operating System files
+.DS_Store # macOS
+Thumbs.db # Windows
+
+# Test/build related files (common)
+.pytest_cache/
+.mypy_cache/
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
