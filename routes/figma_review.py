@@ -1,13 +1,5 @@
-import json
-import os
-import re
-from typing import Any
-
-import httpx
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from routes.models import DesignCritiqueOutput, FigmaRequest
-from openai import AsyncOpenAI, OpenAIError
-from .shared_functions import get_design_critique_prompt, extract_file_key
 from services.design_critique import get_design_critique
 
 router = APIRouter()

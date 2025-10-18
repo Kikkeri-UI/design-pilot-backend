@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware # Crucial for frontend commun
 from routes.text_review import router as text_review_router
 # Assuming figma_review.py contains 'router = APIRouter()'
 from routes.figma_review import router as figma_review_router
+from routes.simulate_user import router as simulate_user_router
 
 
 # Load environment variables from .env file
@@ -16,6 +17,14 @@ from routes.figma_review import router as figma_review_router
 load_dotenv()
 
 app = FastAPI()
+
+# main.py (Add this temporary block)
+
+@app.get("/status")
+def get_status():
+    return {"status": "ok", "message": "Base route is working"}
+
+# ... (rest of main.py) ...
 
 # --- CORS Configuration ---
 # This allows your Next.js frontend (e.g., on localhost:3000) to make requests to this backend
@@ -37,3 +46,4 @@ app.add_middleware(
 # This tells your FastAPI app to recognize the endpoints defined in these routers
 app.include_router(text_review_router)
 app.include_router(figma_review_router)
+app.include_router(simulate_user_router)

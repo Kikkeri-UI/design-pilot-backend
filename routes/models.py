@@ -6,6 +6,9 @@ class FigmaRequest(BaseModel):
     figma_pat: str
     figma_node: str | None = None
 
+class SimulateUser(FigmaRequest):
+    user_context: str = Field(...,description="The detailed user persona")
+
 class MetricCritiqueDetail(BaseModel):
     score: int = Field(..., ge=0, le=5)  # Score between 0 and 5
     analysis: str

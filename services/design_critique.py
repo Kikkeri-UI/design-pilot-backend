@@ -6,14 +6,15 @@ import httpx
 from fastapi import HTTPException
 from openai import AsyncOpenAI, OpenAIError
 
-from routes.models import FigmaRequest, DesignCritiqueOutput
+from routes.models import DesignCritiqueOutput
 from routes.shared_functions import extract_file_key, get_design_critique_prompt
 
 
 async def get_design_critique(
     figma_url: str,
     figma_pat: str,
-    figma_node: str | None
+    figma_node: str | None,
+    user_context: str | None = None,
 ) -> DesignCritiqueOutput:
 
 
@@ -75,12 +76,25 @@ async def get_design_critique(
             raise ValueError("Failed to parse the figma API response", {e})
 
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Unexpected error occured {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Unexpected error occurred {str(e)}")
 
 
-    # step 3: call the open ai api with all the necessary parameters
+    # step 3: call the open AI api with all the necessary parameters
 
-    system_message = get_design_critique_prompt()
+    base_system_message = get_design_critique_prompt()
+
+    if user_context:
+        final_system_message = f"""
+            ***SIMULATION CONTEXT:***
+            {user_context}
+            
+            ------------------
+            
+            {base_system_message}
+        """
+    else:
+        final_system_message = base_system_message
+
 
     user_content_message = [
         {"type": "text", "text": "critique this design based on the instructions"},
@@ -88,7 +102,7 @@ async def get_design_critique(
     ]
 
     messages_for_openai = [
-        {"role": "system", "content": system_message},
+        {"role": "system", "content": final_system_message},
         # The user message can be a simple instruction to apply the critique.
         {"role": "user", "content": user_content_message}
     ]
