@@ -1,5 +1,7 @@
 import os
+import re
 from http.client import HTTPException
+from typing import Any
 
 
 def get_design_critique_prompt() -> str:
@@ -21,3 +23,11 @@ def get_design_critique_prompt() -> str:
     except Exception as e:
         print(f"DEBUG: ERROR: An unexpected error occurred while reading the prompt file: {e}")
         raise HTTPException(status_code=500, detail="Server configuration error: Failed to read prompt file.")
+
+
+# method to extract the file_key from the url
+def extract_file_key(figma_url: str) -> str | None | Any:
+    match = re.search(r"figma\.com/(file|design)/([a-zA-Z0-9]+)", figma_url)
+    if match:
+        return match.group(2)
+    return None

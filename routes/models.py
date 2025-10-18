@@ -1,6 +1,10 @@
 # Pydantic Models for the AI's Critique Output (mirroring your prompt's JSON format)
 from pydantic import Field, BaseModel
 
+class FigmaRequest(BaseModel):
+    figma_url: str
+    figma_pat: str
+    figma_node: str | None = None
 
 class MetricCritiqueDetail(BaseModel):
     score: int = Field(..., ge=0, le=5)  # Score between 0 and 5

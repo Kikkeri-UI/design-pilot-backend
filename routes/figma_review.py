@@ -5,25 +5,11 @@ from typing import Any
 
 import httpx
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from .models import DesignCritiqueOutput
+from .models import DesignCritiqueOutput, FigmaRequest
 from openai import AsyncOpenAI, OpenAIError
-from .shared_functions import get_design_critique_prompt
+from .shared_functions import get_design_critique_prompt, extract_file_key
 
 router = APIRouter()
-
-class FigmaRequest(BaseModel):
-    figma_url: str
-    figma_pat: str
-    figma_node: str | None = None
-
-# method to extract the file_key from the url
-def extract_file_key(figma_url: str) -> str | None | Any:
-    match = re.search(r"figma\.com/(file|design)/([a-zA-Z0-9]+)", figma_url)
-    if match:
-        return match.group(2)
-    return None
-
 
 @router.post('/figma-review', response_model=DesignCritiqueOutput)
 async def figma_review(review_request: FigmaRequest):
