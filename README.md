@@ -12,13 +12,9 @@ Pydantic Schema Validation: Strict type-checking and data validation for incomin
 
 Modular Architecture: Designed with clear separation of concerns (Routes, Services, and AI Prompts).
 
-Dockerized: Ready for containerized deployment (Jenkins/CI/CD compatible).
-
 Key Endpoints:
 
 POST /critique: Accepts design data and returns a structured JSON critique based on UX heuristics.
-
-GET /health: System health check for CI/CD monitoring.
 
 Installation & Setup:
 
